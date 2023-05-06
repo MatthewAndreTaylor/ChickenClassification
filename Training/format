@@ -1,0 +1,14 @@
+!#/bin/bash
+
+find . -type f -name "*.*" -exec sh -c 'mv "$0" "${0%.*}.jpg"' {} \;
+
+count=0
+for dir in */; do
+  for file in "$dir"/*; do
+    ext="${file##*.}"
+    newname="$(printf '%s-%03d.%s' "${dir%/}" "$count" "$ext")"
+    mv -n "$file" "${dir}${newname}"
+    (( count++ ))
+  done
+  count=0
+done
